@@ -1,4 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
+import Navigation from './Navigation';
+import { Paper, Box, Typography, Stack, Button, ToggleButton, ToggleButtonGroup, Divider, FormControlLabel, Switch, Select, MenuItem } from '@mui/material';
+import ScannerIcon from '@mui/icons-material/Scanner';
 
 const ScanSettingsScreen = ({ setCurrentScreen, setTotalCost }) => {
     // Basic state for settings - expand as needed
@@ -30,44 +34,42 @@ const ScanSettingsScreen = ({ setCurrentScreen, setTotalCost }) => {
     }, [resolution, fileFormat, saveToUsb, setTotalCost]);
 
     return (
-        <section id="scan-settings-screen" className="screen active">
-            <h1>Scan Settings</h1>
-            
-            <form className="settings-form" style={{width: '100%', maxWidth: '500px'}}>
-                <div className="form-row" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-md)'}}>
-                    <label htmlFor="resolution">Resolution:</label>
-                    <select id="resolution" value={resolution} onChange={e => setResolution(e.target.value)} style={{padding: 'var(--spacing-sm)'}}>
-                        <option value="150dpi">150 DPI</option>
-                        <option value="300dpi">300 DPI</option>
-                        <option value="600dpi">600 DPI</option>
-                    </select>
-                </div>
-
-                <div className="form-row" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-md)'}}>
-                    <label htmlFor="file-format">File Format:</label>
-                    <select id="file-format" value={fileFormat} onChange={e => setFileFormat(e.target.value)} style={{padding: 'var(--spacing-sm)'}}>
-                        <option value="pdf">PDF</option>
-                        <option value="jpeg">JPEG</option>
-                        <option value="png">PNG</option>
-                    </select>
-                </div>
-
-                <div id="save-format-row" className="form-row" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--spacing-md)'}}>
-                    <label htmlFor="save-to-usb">Save to USB Drive:</label>
-                    <input type="checkbox" id="save-to-usb" checked={saveToUsb} onChange={e => setSaveToUsb(e.target.checked)} />
-                </div>
-                
-                {/* Add more form rows for other settings if needed */}
-            </form>
-
-            <div className="navigation">
-                <button className="nav-btn" onClick={() => setCurrentScreen('attach-file-screen')}>
-                    <span className="material-icons">arrow_back</span> Back
-                </button>
-                <button className="btn btn-primary" onClick={() => setCurrentScreen('payment-settings-screen')}>
-                    Next
-                </button>
-            </div>
+        <section id="scan-settings-screen" className="screen active" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100%' }}>
+            <Paper elevation={4} sx={{ px: { xs: 2, sm: 6 }, py: { xs: 4, sm: 6 }, borderRadius: 6, minWidth: 320, maxWidth: 480, width: '100%', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.12)', background: 'linear-gradient(135deg, #e3f2fd 0%, #fff 100%)' }}>
+                <Stack direction="row" spacing={2} alignItems="center" mb={2}>
+                    <Box sx={{ bgcolor: 'primary.main', width: 48, height: 48, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ScannerIcon sx={{ color: 'white', fontSize: 32 }} />
+                    </Box>
+                    <Typography variant="h5" color="primary" fontWeight={800}>Scan Settings</Typography>
+                </Stack>
+                <Divider sx={{ mb: 2, width: '100%' }} />
+                <Stack spacing={3} sx={{ width: '100%' }}>
+                    <Box>
+                        <Typography fontWeight={600} mb={1}>Resolution</Typography>
+                        <ToggleButtonGroup value={resolution} exclusive onChange={(_, v) => v && setResolution(v)} sx={{ width: '100%' }}>
+                            <ToggleButton value="150dpi" sx={{ flex: 1, fontWeight: 600 }}>150 DPI</ToggleButton>
+                            <ToggleButton value="300dpi" sx={{ flex: 1, fontWeight: 600 }}>300 DPI</ToggleButton>
+                            <ToggleButton value="600dpi" sx={{ flex: 1, fontWeight: 600 }}>600 DPI</ToggleButton>
+                        </ToggleButtonGroup>
+                    </Box>
+                    <Box>
+                        <Typography fontWeight={600} mb={1}>File Format</Typography>
+                        <Select value={fileFormat} onChange={e => setFileFormat(e.target.value)} size="small" sx={{ width: '100%' }}>
+                            <MenuItem value="pdf">PDF</MenuItem>
+                            <MenuItem value="jpeg">JPEG</MenuItem>
+                            <MenuItem value="png">PNG</MenuItem>
+                        </Select>
+                    </Box>
+                    <Box>
+                        <FormControlLabel control={<Switch checked={saveToUsb} onChange={e => setSaveToUsb(e.target.checked)} color="primary" />} label="Save to USB Drive" sx={{ justifyContent: 'center', width: '100%' }} />
+                    </Box>
+                </Stack>
+                <Divider sx={{ my: 3, width: '100%' }} />
+                <Navigation
+                    onBack={() => setCurrentScreen('attach-file-screen')}
+                    onNext={() => setCurrentScreen('payment-settings-screen')}
+                />
+            </Paper>
         </section>
     );
 }

@@ -1,5 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
 
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Navigation from './Navigation';
+import { Box, Paper, Typography, Button, Stack, Avatar } from '@mui/material';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 const AttachFileScreen = ({ setCurrentScreen, selectedService, /* setCapturedScan */ }) => {
     // Determine titles and instructions based on the selected service
     const title = selectedService === 'scan' || selectedService === 'photocopy' ? 'Place Document' : 'Attach File';
@@ -107,95 +111,128 @@ const AttachFileScreen = ({ setCurrentScreen, selectedService, /* setCapturedSca
         (selectedService === 'print' && !selectedFile) ||
         ((selectedService === 'scan' || selectedService === 'photocopy') && !capturedImage);
 
+
     return (
-        <section id="attach-file-screen" className="screen active">
-            <h1 id="attach-title">{title}</h1>
-            <p id="attach-instruction">{instruction}</p>
-            
-            {selectedService === 'print' && (
-                <div className="button-group" style={{alignItems: 'center'}}>
-                    <input 
-                        type="file" 
-                        id="file-upload" 
-                        ref={fileInputRef}
-                        style={{ display: 'none' }} 
-                        onChange={handleFileChange}
-                        // accept=".pdf,.doc,.docx,.jpg,.png" 
-                    />
-                    <button 
-                        className="btn btn-primary" 
-                        onClick={handleChooseFileClick}
-                        style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}
-                    >
-                        <span className="material-icons" style={{ marginRight: 'var(--spacing-sm)' }}>attach_file</span> 
-                        Choose File
-                    </button>
-                    {selectedFile && (
-                        <p style={{ marginTop: 'var(--spacing-md)', fontSize: 'var(--fs-small)' }}>
-                            Selected: {selectedFile.name}
-                        </p>
-                    )}
-                    {fileError && (
-                        <p style={{ marginTop: 'var(--spacing-md)', fontSize: 'var(--fs-small)', color: 'var(--error)' }}>
-                            Error: {fileError}
-                        </p>
-                    )}
-                </div>
-            )}
+        <section id="attach-file-screen" className="screen active" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100%' }}>
+            <Paper
+                elevation={4}
+                sx={{
+                    px: { xs: 2, sm: 6 },
+                    py: { xs: 4, sm: 6 },
+                    borderRadius: 6,
+                    minWidth: 320,
+                    maxWidth: 420,
+                    width: '100%',
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    boxShadow: '0 8px 32px 0 rgba(0,0,0,0.12)',
+                    background: 'linear-gradient(135deg, #e3f2fd 0%, #fff 100%)',
+                }}
+            >
+                <Typography variant="h4" color="primary" fontWeight={800} gutterBottom sx={{ fontSize: { xs: '1.6rem', sm: '2rem' } }}>
+                    {title}
+                </Typography>
+                <Typography variant="h6" color="text.secondary" fontWeight={500} mb={3}>
+                    {instruction}
+                </Typography>
+                {/* Only show attach file for print service */}
+                {selectedService === 'print' && (
+                    <>
+                        <input
+                            type="file"
+                            id="file-upload"
+                            ref={fileInputRef}
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                        />
+                        <Button
+                            onClick={handleChooseFileClick}
+                            variant="outlined"
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                minHeight: 120,
+                                width: 120,
+                                borderRadius: '50%',
+                                boxShadow: 3,
+                                bgcolor: 'background.paper',
+                                p: 0,
+                                mb: 2,
+                                transition: 'box-shadow 0.2s, background 0.2s',
+                                '&:hover': {
+                                    boxShadow: 8,
+                                    bgcolor: 'primary.light',
+                                },
+                                textTransform: 'none',
+                            }}
+                        >
+                            <AttachFileIcon sx={{ fontSize: 48, color: 'primary.main' }} />
+                        </Button>
+                        <Typography variant="body1" fontWeight={700} color="text.primary" sx={{ mb: 1 }}>
+                            Attach File
+                        </Typography>
+                        {selectedFile && (
+                            <Typography variant="body2" color="primary" sx={{ mb: 1, wordBreak: 'break-all' }}>
+                                {selectedFile.name}
+                            </Typography>
+                        )}
+                        {fileError && (
+                            <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+                                Error: {fileError}
+                            </Typography>
+                        )}
+                    </>
+                )}
+
 
             {(selectedService === 'scan' || selectedService === 'photocopy') && (
-                <div className="camera-container" style={{border: '1px dashed var(--outline)', width: '100%', maxWidth:'400px', minHeight: '300px', display:'flex', flexDirection: 'column', alignItems:'center', justifyContent:'center', margin:'var(--spacing-lg) auto', backgroundColor: '#000', position: 'relative'}}>
-                    {cameraError && (
-                        <p style={{ color: 'var(--error)', marginBottom: 'var(--spacing-md)', padding: 'var(--spacing-md)', textAlign: 'center' }}>{cameraError}</p>
-                    )}
-                    
-                    {/* Hidden canvas for image capture */} 
-                    <canvas ref={canvasRef} style={{ display: 'none' }} />
-
-                    {capturedImage ? (
-                        <img src={capturedImage} alt="Captured Scan" style={{ width: '100%', height: 'auto', display: 'block' }} />
-                    ) : (
-                        <video 
-                            ref={videoRef} 
-                            autoPlay 
-                            playsInline 
-                            muted 
-                            style={{ width: '100%', height: 'auto', display: cameraStream && !cameraError ? 'block' : 'none' }}
-                        />
-                    )}
-
-                    {!cameraStream && !cameraError && !capturedImage && (selectedService === 'scan' || selectedService === 'photocopy') && (
-                        <p style={{color: 'var(--on-surface-light)'}}>Attempting to start camera...</p>
-                    )}
-
-                    <div className="button-group-horizontal" style={{ marginTop: 'var(--spacing-md)'}}>
+                <>
+                    <Box className="camera-container" sx={{ border: '1px dashed', borderColor: 'outline', width: '100%', maxWidth: 400, minHeight: 300, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', my: 4, mx: 'auto', bgcolor: '#000', position: 'relative', borderRadius: 3, overflow: 'hidden' }}>
+                        {cameraError && (
+                            <Typography color="error" sx={{ mb: 2, p: 2, textAlign: 'center' }}>{cameraError}</Typography>
+                        )}
+                        {/* Hidden canvas for image capture */}
+                        <canvas ref={canvasRef} style={{ display: 'none' }} />
+                        {capturedImage ? (
+                            <img src={capturedImage} alt="Captured Scan" style={{ width: '100%', height: 'auto', display: 'block' }} />
+                        ) : (
+                            <video
+                                ref={videoRef}
+                                autoPlay
+                                playsInline
+                                muted
+                                style={{ width: '100%', height: 'auto', display: cameraStream && !cameraError ? 'block' : 'none' }}
+                            />
+                        )}
+                        {!cameraStream && !cameraError && !capturedImage && (selectedService === 'scan' || selectedService === 'photocopy') && (
+                            <Typography color="text.secondary">Attempting to start camera...</Typography>
+                        )}
+                    </Box>
+                    <Stack direction="row" spacing={2} justifyContent="center" alignItems="center" sx={{ mt: 2 }}>
                         {cameraStream && !cameraError && !capturedImage && (
-                            <button className="btn btn-primary" onClick={handleCapture} style={{display: 'flex', alignItems: 'center'}}>
-                                <span className="material-icons" style={{marginRight: 'var(--spacing-sm)'}}>camera_alt</span>Capture Document
-                            </button>
+                            <Button variant="contained" color="primary" onClick={handleCapture} startIcon={<span className="material-icons">camera_alt</span>} sx={{ fontWeight: 600, fontSize: '1.1rem', borderRadius: 3, px: 3 }}>
+                                Capture Document
+                            </Button>
                         )}
                         {capturedImage && (
-                            <button className="btn btn-secondary" onClick={handleRecapture} style={{display: 'flex', alignItems: 'center'}}>
-                                <span className="material-icons" style={{marginRight: 'var(--spacing-sm)'}}>refresh</span>Recapture
-                            </button>
+                            <Button variant="outlined" color="primary" onClick={handleRecapture} startIcon={<span className="material-icons">refresh</span>} sx={{ fontWeight: 600, fontSize: '1.1rem', borderRadius: 3, px: 3 }}>
+                                Recapture
+                            </Button>
                         )}
-                    </div>
-                </div>
+                    </Stack>
+                </>
             )}
 
-            <div className="navigation">
-                <button className="nav-btn" onClick={() => setCurrentScreen('service-screen')}>
-                    <span className="material-icons">arrow_back</span> Back
-                </button>
-                <button 
-                    id="capture-done-btn" 
-                    className="btn btn-primary" 
-                    onClick={() => setCurrentScreen(selectedService === 'scan' ? 'scan-settings-screen' : 'print-settings-screen')}
-                    disabled={isNextDisabled}
-                >
-                    Next <span className="material-icons">arrow_forward</span>
-                </button>
-            </div>
+            <Navigation
+                onBack={() => setCurrentScreen('service-screen')}
+                onNext={() => setCurrentScreen(selectedService === 'scan' ? 'scan-settings-screen' : 'print-settings-screen')}
+                nextDisabled={isNextDisabled}
+            />
+            </Paper>
         </section>
     );
 }

@@ -1,4 +1,6 @@
+
 import React, { useEffect, useState } from 'react';
+import Navigation from './Navigation';
 
 const ThankYouScreen = ({ setCurrentScreen }) => {
     const [countdown, setCountdown] = useState(5); // Initial countdown time in seconds
@@ -24,7 +26,8 @@ const ThankYouScreen = ({ setCurrentScreen }) => {
             <p style={{fontSize: 'var(--fs-base)', color: 'var(--on-surface-medium)'}}>
                 Redirecting to the main screen in {countdown} second{countdown === 1 ? '' : 's'}...
             </p>
-            {/* No navigation buttons here, as it auto-navigates */}
+            {/* Navigation hidden intentionally for this screen */}
+            <Navigation hideBack hideNext />
         </section>
     );
 }

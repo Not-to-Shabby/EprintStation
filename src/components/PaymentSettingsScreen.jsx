@@ -1,4 +1,10 @@
+
 import React, { useState } from 'react';
+import Navigation from './Navigation';
+import { Paper, Box, Typography, Stack, Button, Divider, Avatar } from '@mui/material';
+import PaymentsIcon from '@mui/icons-material/Payments';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
 
 const PaymentSettingsScreen = ({ setCurrentScreen, selectedService, totalCost, setJobDetails }) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
@@ -27,51 +33,51 @@ const PaymentSettingsScreen = ({ setCurrentScreen, selectedService, totalCost, s
     };
 
     return (
-        <section id="payment-settings-screen" className="screen active">
-            <h1 id="payment-title">Payment</h1>
-            
-            <div className="cost-summary" style={{ margin: 'var(--spacing-lg) 0' }}>
-                <h2>Total Cost: <span id="total-cost">₱{calculatedCost.toFixed(2)}</span></h2>
-            </div>
-
-            <p>Please select your payment method:</p>
-            <div className="button-group" style={{flexDirection: 'column', gap: 'var(--spacing-md)'}}>
-                <button 
-                    className={`btn btn-tonal ${selectedPaymentMethod === 'Coins' ? 'btn-primary' : ''}`}
-                    onClick={() => setSelectedPaymentMethod('Coins')}
-                >
-                    Coins
-                </button>
-                <button 
-                    className={`btn btn-tonal ${selectedPaymentMethod === 'Mobile Payment' ? 'btn-primary' : ''}`}
-                    onClick={() => setSelectedPaymentMethod('Mobile Payment')}
-                >
-                    Mobile Payment
-                </button>
-                {/* <button 
-                    className={`btn btn-tonal ${selectedPaymentMethod === 'Coin/Cash' ? 'btn-primary' : ''}`}
-                    onClick={() => setSelectedPaymentMethod('Coin/Cash')}
-                >
-                    Coin/Cash (if applicable)
-                </button> */}
-            </div>
-
-            <div className="navigation">
-                <button 
-                    id="payment-prev-btn" 
-                    className="nav-btn" 
-                    onClick={() => setCurrentScreen(selectedService === 'scan' ? 'scan-settings-screen' : 'print-settings-screen')}
-                >
-                    <span className="material-icons">arrow_back</span> Back
-                </button>
-                <button 
-                    className="btn btn-primary" 
-                    onClick={handlePayment} 
-                    disabled={calculatedCost <= 0 || !selectedPaymentMethod}
-                >
-                    Pay Now
-                </button>
-            </div>
+        <section id="payment-settings-screen" className="screen active" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100%' }}>
+            <Paper elevation={4} sx={{ px: { xs: 2, sm: 6 }, py: { xs: 4, sm: 6 }, borderRadius: 6, minWidth: 320, maxWidth: 420, width: '100%', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.12)', background: 'linear-gradient(135deg, #e3f2fd 0%, #fff 100%)' }}>
+                <Stack direction="row" spacing={2} alignItems="center" mb={2}>
+                    <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48 }}>
+                        <PaymentsIcon />
+                    </Avatar>
+                    <Typography variant="h5" color="primary" fontWeight={800}>Payment</Typography>
+                </Stack>
+                <Divider sx={{ mb: 2, width: '100%' }} />
+                <Typography variant="h6" color="text.secondary" fontWeight={500} mb={2}>
+                    Please select your payment method
+                </Typography>
+                <Typography variant="h4" color="primary" fontWeight={700} mb={3}>
+                    ₱{calculatedCost.toFixed(2)}
+                </Typography>
+                <Stack spacing={3} sx={{ width: '100%' }}>
+                    <Button
+                        variant={selectedPaymentMethod === 'Coins' ? 'contained' : 'outlined'}
+                        color="primary"
+                        startIcon={<MonetizationOnIcon />}
+                        onClick={() => setSelectedPaymentMethod('Coins')}
+                        sx={{ py: 2, fontWeight: 700, fontSize: '1.2rem', borderRadius: 4, boxShadow: selectedPaymentMethod === 'Coins' ? 3 : 0 }}
+                        fullWidth
+                    >
+                        Coins
+                    </Button>
+                    <Button
+                        variant={selectedPaymentMethod === 'Mobile Payment' ? 'contained' : 'outlined'}
+                        color="primary"
+                        startIcon={<SmartphoneIcon />}
+                        onClick={() => setSelectedPaymentMethod('Mobile Payment')}
+                        sx={{ py: 2, fontWeight: 700, fontSize: '1.2rem', borderRadius: 4, boxShadow: selectedPaymentMethod === 'Mobile Payment' ? 3 : 0 }}
+                        fullWidth
+                    >
+                        Mobile Payment
+                    </Button>
+                </Stack>
+                <Divider sx={{ my: 3, width: '100%' }} />
+                <Navigation
+                    onBack={() => setCurrentScreen(selectedService === 'scan' ? 'scan-settings-screen' : 'print-settings-screen')}
+                    onNext={handlePayment}
+                    nextLabel="Pay Now"
+                    nextDisabled={calculatedCost <= 0 || !selectedPaymentMethod}
+                />
+            </Paper>
         </section>
     );
 }
