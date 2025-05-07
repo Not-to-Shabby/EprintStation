@@ -1,0 +1,276 @@
+/* Modern Design System Variables */
+:root {
+    /* Primary Color Palette */
+    --primary: #2563EB;
+    --primary-dark: #1E40AF;
+    --primary-light: #DBEAFE;
+    --secondary: #10B981;
+    --accent: #8B5CF6;
+    
+    /* Neutral Colors */
+    --background: #F8FAFC;
+    --surface: #FFFFFF;
+    --surface-variant: #F1F5F9;
+    --on-surface: #1E293B;
+    --on-surface-medium: #64748B;
+    --on-surface-light: #94A3B8;
+    --outline: #CBD5E1;
+    
+    /* Interactive States */
+    --hover-overlay: rgba(0, 0, 0, 0.04);
+    --pressed-overlay: rgba(0, 0, 0, 0.08);
+    --error: #EF4444;
+    
+    /* Typography */
+    --font-family: 'Inter', system-ui, sans-serif;
+    --fs-display: 40px;
+    --fs-headline: 32px;
+    --fs-title: 24px;
+    --fs-large: 18px;
+    --fs-base: 16px;
+    --fs-small: 14px;
+    --fw-regular: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --fw-bold: 700;
+    
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 40px;
+    
+    /* Elevation */
+    --shadow-sm: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+    
+    /* Shapes */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+}
+
+/* Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: var(--font-family);
+    font-size: var(--fs-base);
+    background-color: var(--background);
+    color: var(--on-surface);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Kiosk Container */
+.kiosk-container {
+    width: 100%;
+    max-width: 1024px;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: var(--surface);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.kiosk-header {
+    background-color: var(--primary);
+    color: white;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.logo {
+    font-size: var(--fs-headline);
+    font-weight: var(--fw-bold);
+}
+
+/* Screens */
+.screen {
+    /* display: none; */ /* React will handle visibility */
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--spacing-lg);
+    animation: fadeIn 0.3s ease-in-out;
+    text-align: center;
+}
+
+/* .screen.active { */ /* React will handle visibility */
+    /* display: flex; */
+/* } */
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Typography */
+h1 {
+    font-size: var(--fs-headline);
+    font-weight: var(--fw-bold);
+    margin-bottom: var(--spacing-lg);
+    color: var(--primary);
+}
+
+h2 {
+    font-size: var(--fs-title);
+    font-weight: var(--fw-semibold);
+    margin-bottom: var(--spacing-md);
+}
+
+p {
+    font-size: var(--fs-base);
+    margin-bottom: var(--spacing-md);
+    color: var(--on-surface-medium);
+    max-width: 600px;
+}
+
+/* Buttons */
+.btn {
+    font-family: var(--font-family);
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-base);
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-md);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 160px;
+    text-align: center;
+    margin: var(--spacing-sm);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+    background-color: var(--surface-variant);
+    color: var(--primary);
+    border: 1px solid var(--primary-light);
+}
+
+.btn-secondary:hover {
+    background-color: var(--primary-light);
+}
+
+.btn-tonal {
+    background-color: var(--surface-variant);
+    color: var(--on-surface);
+    border: 1px solid var(--outline);
+}
+
+.btn-tonal:hover {
+    background-color: var(--hover-overlay);
+}
+
+.service-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    width: 160px;
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-variant);
+    color: var(--on-surface);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    border: 1px solid var(--outline);
+}
+
+.service-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.service-btn i {
+    font-size: 32px;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Button Groups */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-xl);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Styles for #service-screen .button-group might need to be applied to a specific component later */
+/* #service-screen .button-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 600px;
+    gap: var(--spacing-xl);
+} */
+
+.button-group-horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+/* Navigation */
+.navigation {
+    position: absolute;
+    bottom: var(--spacing-xl);
+    left: var(--spacing-xl);
+    right: var(--spacing-xl);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-btn {
+    background: transparent;
+    color: var(--primary);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    font-weight: var(--fw-medium);
+    font-size: var(--fs-base);
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* Placeholder for other styles from original HTML */
+/* e.g., .nav-btn:hover, .nav-btn svg, .settings-form, etc. */
+/* You'll need to copy these over from the original <style> block */
+
+/* Responsive Adjustments */
+/* @media (max-width: 600px) { ... } */
